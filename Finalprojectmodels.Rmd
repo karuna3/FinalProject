@@ -1,0 +1,90 @@
+---
+title: "FinalProject_Models"
+author: "Karuna Reddy"
+date: "April 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+#Read the data into a data frame
+data<-read.csv("C:\\Users\\karun\\Desktop\\goose_rawdata.csv")
+```
+
+#Let us consider the gwar as the dependent variable
+```{r}
+#Let us remove the rows where the value of gwar is missing
+data_nomissing<-data[which(!is.na(data$gwar)),]
+```
+
+```{r}
+#Let us try the first model where we assume ppf, league_average_gpct
+
+model1<-lm(data = data_nomissing, gwar~ppf+league_average_gpct)
+
+summary(model1)
+
+#In the model here we see that the fit between the dependent and independent
+#variables is very poor. The R2 value is 0.0001476 also we see that none of the
+#coefficients associated with the independent variables are statistically significant
+
+#Here the model coefficients imply that a unit change in ppf value leads to a change of 
+#-0.0004163 in gwar and unit change in league_average_gpct leads to a change of 0.4908147
+#in gwar
+
+#Plotting the residuals
+library(ggplot2)
+
+ggplot() + geom_point(aes(x=data_nomissing$gwar, y=resid(model1)), colour = "red", size = 3) + 
+   geom_segment(aes(x=data_nomissing$gwar, xend=data_nomissing$gwar, y=0, yend=resid(model1)))+geom_hline(yintercept = 0)
+```
+
+```{r}
+#Let us try the second model where we assume ppf, league_average_gpct, goose eggs
+
+model2<-lm(data = data_nomissing, gwar~ppf+league_average_gpct+goose_eggs)
+
+summary(model2)
+
+#In the model here we see that the fit between the dependent and independent
+#variables is decent. The R2 value is 0.508 and the variables league_average_gpct and
+#goose_eggs are statistically significant
+
+#Here the model coefficients imply that a unit change in ppf value leads to a change of 
+#0.0014065 in gwar and unit change in league_average_gpct leads to a change of -1.4716707
+#in gwar and a unit change in goose_eggs leads to a change of 0.0650532 in gwar
+
+#Plotting the residuals
+library(ggplot2)
+
+ggplot() + geom_point(aes(x=data_nomissing$gwar, y=resid(model2)), colour = "red", size = 3) + 
+   geom_segment(aes(x=data_nomissing$gwar, xend=data_nomissing$gwar, y=0, yend=resid(model2)))+geom_hline(yintercept = 0)
+```
+
+```{r}
+#Let us try the third model where we assume ppf, league_average_gpct, goose eggs and broken_eggs
+
+model3<-lm(data = data_nomissing, gwar~ppf+league_average_gpct+goose_eggs+broken_eggs)
+
+summary(model3)
+
+#In the model here we see that the fit between the dependent and independent
+#variables is excellent. The R2 value is 0.9805 and all the variables are statistically significant
+
+#Here the model coefficients imply that a unit change in ppf value leads to a change of 
+#0.0006104 in gwar, unit change in league_average_gpct leads to a change of -4.9178608
+#in gwar, a unit change in goose_eggs leads to a change of 0.1421655 in gwar and a unit 
+#change in value of broken_eggs leads to a change of -0.3661402 in gwar
+
+#Plotting the residuals
+library(ggplot2)
+
+ggplot() + geom_point(aes(x=data_nomissing$gwar, y=resid(model3)), colour = "red", size = 3) + 
+   geom_segment(aes(x=data_nomissing$gwar, xend=data_nomissing$gwar, y=0, yend=resid(model3)))+geom_hline(yintercept = 0)
+```
+
