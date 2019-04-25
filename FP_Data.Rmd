@@ -23,13 +23,15 @@ data<-read.csv("C:\\Users\\karun\\Desktop\\goose_rawdata.csv")
 
 # Source of data is https://github.com/fivethirtyeight/data/tree/master/goose
 
+# Why you have chosen this data?
 # I chose the data set as it has required size and other requirements that have been mentioned in the problem statement
 
 library(dplyr)
 
 data%>%group_by(team)%>%summarize(AverageBrokenEggs=mean(broken_eggs,na.rm = TRUE))
 
-#In the above code we populate the average broken eggs by each team
+# what you're trying to present in this code ?
+#In the above code we populate the average broken eggs by each team.
 
 ```
 
